@@ -9,11 +9,12 @@ var severity = "warning";
 // info
 // unknown
 
-if(body.alertType == "Settings changed") {severity = "info";}
-if(body.alertType == "Motion detected") {severity = "info";}
-if(body.alertType == "Network usage alert") {severity = "warning";}
-if(body.alertType == "APs went down") {severity = "critical";}
-if(body.alertType == "Uplink status changed" && !body.alertData.uplink) {severity = "critical";}
+if (body.attributes.properties.trigger == "agent_offline_trigger") { severity = "critical"; }
+if (body.attributes.properties.trigger == "Intel Rapid Storage Monitoring" && body.attributes.formatted_output.includes("Volume RAIDVOL: Verification and repair in progress.")) { 
+    severity = "error"; 
+}
+if (body.attributes.properties.trigger == "CPU Monitoring") { severity = "warning"; }
+
 
 // Set priority based on severity
 switch (severity) {
@@ -37,15 +38,20 @@ switch (severity) {
 
 // Format payload
 var cef_event = {
-event_type: PD.Trigger,
-description: body.alertType,
-severity: severity,
-priority: priority,
-source_origin: body.networkName,
-dedup_key: body.alertId,
-service_group: body.organizationId,
-event_action: PD.Trigger,
-details: body
-}
+    event_type: PD.Trigger,
+    description: "RMM Alert: " + body.attributes.formatted_output,
+    severity: severity,
+    priority: priority,
+    source_origin: "Syncro RMM",
+    dedup_key: body.attributes.id.toString(),
+    service_group: body.attributes.customer.id.toString(),
+    event_action: PD.Trigger,
+    details: {
+        alert_text: body.text,
+        alert_html: body.html,
+        link: body.link,
+        alert_attributes: body.attributes
+    }
+};
 
 PD.emitCEFEvents([cef_event]);
