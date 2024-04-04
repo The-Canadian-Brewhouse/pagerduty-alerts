@@ -2,15 +2,13 @@
 var body = PD.inputRequest.body;
 
 // If alert is resolved, then append description with "resolved"
-var resolved = body.attributes.resolved;
-var description = (resolved == "True") ? "Resolved: " + body.attributes.properties.description : body.attributes.properties.description;
+var description = (body.attributes.resolved == "true") ? "Resolved: " + body.attributes.properties.description : body.attributes.properties.description;
 
-// set device name
-var deviceName = body.attributes.properties.computer_name
-
+// Define event type based on resolution status
+var eventType = (body.attributes.resolved == "true") ? PD.Resolve : PD.Trigger;
 
 // Set Alert Priority
-var priority = "Sev3";
+var priority = "sev3";
 
 // Set Alert Severity
 var severity = "warning";
@@ -20,45 +18,57 @@ var severity = "warning";
 // info
 // unknown
 
+// Set Severity based on trigger type
+// critical
 if (body.attributes.properties.trigger == "agent_offline_trigger") { severity = "critical"; }
-if (body.attributes.properties.trigger == "Intel Rapid Storage Monitoring" && body.attributes.formatted_output.includes("Volume RAIDVOL: Verification and repair in progress.")) { 
-    severity = "error"; 
-}
+// error
+if (body.attributes.properties.trigger == "Intel Rapid Storage Monitoring" && body.attributes.formatted_output.includes("Volume RAIDVOL: Verification and repair in progress.")) { severity = "error"; }
+if (body.attributes.properties.trigger == "Oracle Authentication Error") { severity = "error"; }
+if (body.attributes.properties.trigger == "Low Hd Space Trigger") { severity = "error"; }
+// warning
 if (body.attributes.properties.trigger == "CPU Monitoring") { severity = "warning"; }
+if (body.attributes.properties.trigger == "Ram Monitoring") { severity = "warning"; }
+//todo
+//Dell Server Administrator
+
+
 
 
 // Set priority based on severity
 switch (severity) {
     case "critical":
-        priority = "Sev1";
+        priority = "sev1";
         break;
     case "error":
-        priority = "Sev2";
+        priority = "sev2";
         break;
     case "warning":
-        priority = "Sev3";
+        priority = "sev3";
         break;
     case "info":
-        priority = "Sev4";
+        priority = "sev4";
         break;
 }
 
 
-// Format payload
+
+// Define the event payload
 var cef_event = {
-    event_type: PD.Trigger,
-    description: description,
+    event_type: eventType,
+    event_action: eventType,
+    description: description + " : " + body.attributes.computer_name,
     severity: severity,
     priority: priority,
-    source_origin: deviceName,
+    source_origin: body.attributes.computer_name,
     dedup_key: body.attributes.id.toString(),
     service_group: body.attributes.customer.id.toString(),
-    event_action: PD.Trigger,
     details: {
+        asset: body.attributes.computer_name,  
         alert_text: body.text,
-        alert_html: body.html,
         link: body.link,
+      	resolved: body.attributes.resolved,
     }
 };
 
+// Emit the event
 PD.emitCEFEvents([cef_event]);

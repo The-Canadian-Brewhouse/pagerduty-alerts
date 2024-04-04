@@ -1,8 +1,12 @@
-// Consume Meraki Alert via Webhook
+// Consume syncro alert via Webhook
 var body = PD.inputRequest.body;
 
+// If alert is resolved, then append description with "resolved"
+var resolved = body.attributes.resolved;
+var description = (resolved == "true") ? "Resolved: " + body.attributes.properties.description : body.attributes.properties.description;
+
 // Set Alert Priority
-var priority = "warning";
+var priority = "sev3";
 
 // Set Alert Severity
 var severity = "warning";
@@ -12,42 +16,48 @@ var severity = "warning";
 // info
 // unknown
 
-if(body.alertType == "Settings changed") {severity = "info";}
-if(body.alertType == "Motion detected") {severity = "info";}
-if(body.alertType == "Network usage alert") {severity = "warning";}
-if(body.alertType == "APs went down") {severity = "critical";}
-if(body.alertType == "Uplink status changed" && !body.alertData.uplink) {severity = "critical";}
+if (body.attributes.properties.trigger == "agent_offline_trigger") { severity = "critical"; }
+if (body.attributes.properties.trigger == "Intel Rapid Storage Monitoring" && body.attributes.formatted_output.includes("Volume RAIDVOL: Verification and repair in progress.")) { 
+    severity = "error"; 
+}
+if (body.attributes.properties.trigger == "CPU Monitoring") { severity = "warning"; }
+
 
 // Set priority based on severity
 switch (severity) {
     case "critical":
-        priority = "Sev1";
+        priority = "sev1";
         break;
     case "error":
-        priority = "Sev2";
+        priority = "sev2";
         break;
     case "warning":
-        priority = "Sev3";
-        break;
-    case "error":
-        priority = "Sev4";
+        priority = "sev3";
         break;
     case "info":
-        priority = "Sev5";
+        priority = "sev4";
         break;
 }
 
-// Format payload
-var cef_event = {
-event_type: PD.Trigger,
-description: body.alertType,
-severity: severity,
-priority: priority,
-source_origin: body.networkName,
-dedup_key: body.alertId,
-service_group: body.organizationId,
-event_action: PD.Trigger,
-details: body
-}
+// Define event type based on resolution status
+var eventType = (resolved == "true") ? PD.Resolve : PD.Trigger;
 
+// Define the event payload
+var cef_event = {
+    event_type: eventType,
+    event_action: eventType,
+    description: description,
+    severity: severity,
+    priority: priority,
+    source_origin: body.attributes.computer_name,
+    dedup_key: body.attributes.id.toString(),
+    service_group: body.attributes.customer.id.toString(),
+    details: {
+        asset: body.attributes.computer_name,  
+        alert_text: body.text,
+        link: body.link
+    }
+};
+
+// Emit the event
 PD.emitCEFEvents([cef_event]);
