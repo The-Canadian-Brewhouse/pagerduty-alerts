@@ -1,6 +1,6 @@
-// Consume Syncro Alert via Webhook
-var body = JSON.parse(PD.inputRequest.body);
-​
+// Consume Meraki Alert via Webhook
+var body = PD.inputRequest.body;
+
 // Set Alert Severity
 var severity = "warning";
 // critical
@@ -8,25 +8,44 @@ var severity = "warning";
 // warning
 // info
 // unknown
-​
-// Assuming that 'trigger' field determines the severity
-if (body.attributes.properties.trigger == "agent_offline_trigger") { severity = "critical"; }
-​
+
+if(body.alertType == "Settings changed") {severity = "info";}
+if(body.alertType == "Motion detected") {severity = "info";}
+if(body.alertType == "Network usage alert") {severity = "warning";}
+if(body.alertType == "APs went down") {severity = "critical";}
+if(body.alertType == "Uplink status changed" && !body.alertData.uplink) {severity = "critical";}
+
+// Set priority based on severity
+switch (severity) {
+    case "critical":
+        priority = "Sev1";
+        break;
+    case "error":
+        priority = "Sev2";
+        break;
+    case "warning":
+        priority = "Sev3";
+        break;
+    case "error":
+        priority = "Sev4";
+        break;
+    case "info":
+        priority = "Sev5";
+        break;
+}
+
+
 // Format payload
 var cef_event = {
-    event_type: PD.Trigger,
-    description: "RMM Alert: " + body.attributes.formatted_output,
-    severity: severity,
-    source_origin: "Syncro RMM",
-    dedup_key: body.attributes.id.toString(),
-    service_group: body.attributes.customer.id.toString(),
-    event_action: PD.Trigger,
-    details: {
-        alert_text: body.text,
-        alert_html: body.html,
-        link: body.link,
-        alert_attributes: body.attributes
-    }
-};
-​
+event_type: PD.Trigger,
+description: body.alertType,
+severity: severity,
+priority: priority,
+source_origin: body.networkName,
+dedup_key: body.alertId,
+service_group: body.organizationId,
+event_action: PD.Trigger,
+details: body
+}
+
 PD.emitCEFEvents([cef_event]);
