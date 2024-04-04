@@ -1,6 +1,14 @@
 // Consume syncro alert via Webhook
 var body = PD.inputRequest.body;
 
+// If alert is resolved, then append description with "resolved"
+var resolved = body.attributes.resolved;
+var description = (resolved == "True") ? "Resolved: " + body.attributes.properties.description : body.attributes.properties.description;
+
+// set device name
+var deviceName = body.attributes.properties.computer_name
+
+
 // Set Alert Priority
 var priority = "Sev3";
 
@@ -35,10 +43,6 @@ switch (severity) {
         break;
 }
 
-// If alert is resolved, then append description with "resolved"
-var resolved = body.attributes.resolved;
-var description = (resolved == "True") ? "Resolved: " + body.attributes.properties.description : body.attributes.properties.description;
-
 
 // Format payload
 var cef_event = {
@@ -46,7 +50,7 @@ var cef_event = {
     description: description,
     severity: severity,
     priority: priority,
-    source_origin: "Syncro RMM",
+    source_origin: deviceName,
     dedup_key: body.attributes.id.toString(),
     service_group: body.attributes.customer.id.toString(),
     event_action: PD.Trigger,
@@ -54,7 +58,6 @@ var cef_event = {
         alert_text: body.text,
         alert_html: body.html,
         link: body.link,
-        alert_attributes: body.attributes
     }
 };
 
