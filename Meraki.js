@@ -39,6 +39,7 @@ var cef_event = {
 event_type: PD.Trigger,
 description: body.alertType,
 severity: severity,
+priority: priority,
 source_origin: body.networkName,
 dedup_key: body.alertId,
 service_group: body.organizationId,
