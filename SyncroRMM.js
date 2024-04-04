@@ -1,5 +1,8 @@
-// Consume Meraki Alert via Webhook
+// Consume syncro alert via Webhook
 var body = PD.inputRequest.body;
+
+// Set Alert Priority
+var priority = "Sev3";
 
 // Set Alert Severity
 var severity = "warning";
@@ -27,19 +30,20 @@ switch (severity) {
     case "warning":
         priority = "Sev3";
         break;
-    case "error":
+    case "info":
         priority = "Sev4";
         break;
-    case "info":
-        priority = "Sev5";
-        break;
 }
+
+// If alert is resolved, then append description with "resolved"
+var resolved = body.attributes.resolved;
+var description = (resolved == "True") ? "Resolved: " + body.attributes.properties.description : body.attributes.properties.description;
 
 
 // Format payload
 var cef_event = {
     event_type: PD.Trigger,
-    description: "RMM Alert: " + body.attributes.formatted_output,
+    description: description,
     severity: severity,
     priority: priority,
     source_origin: "Syncro RMM",

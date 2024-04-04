@@ -1,6 +1,9 @@
 // Consume Meraki Alert via Webhook
 var body = PD.inputRequest.body;
 
+// Set Alert Priority
+var priority = "warning";
+
 // Set Alert Severity
 var severity = "warning";
 // critical
