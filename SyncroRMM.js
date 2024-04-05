@@ -2,13 +2,10 @@
 var body = PD.inputRequest.body;
 
 // If alert is resolved, then append description with "resolved"
-var description = (body.attributes.resolved == "true") ? "Resolved: " + body.attributes.properties.description : body.attributes.properties.description;
-
-// Define event type based on resolution status
-var eventType = (body.attributes.resolved == "true") ? PD.Resolve : PD.Trigger;
+var description = body.attributes.properties.description;
 
 // Check if "Auto Resolved" is in the description and set resolved accordingly
-//var resolved = "false";
+var resolved = body.attributes.resolved;
 //if (description.toLowerCase().includes("auto resolved")) {
 //    resolved = "true";
 //}
@@ -21,12 +18,8 @@ var eventType = (body.attributes.resolved == "true") ? PD.Resolve : PD.Trigger;
 //    event_action = PD.Trigger;
 //}
 
-
 // Set Severity based on trigger type
-// Set Alert Severity
 var severity = "warning";
-
-
 // critical
 if (body.attributes.properties.trigger == "agent_offline_trigger") { severity = "critical"; }
 // error
@@ -39,25 +32,20 @@ if (body.attributes.properties.trigger == "Ram Monitoring") { severity = "warnin
 // info
 // unknown
 
-
-
-
-
 // Define the event payload
 var cef_event = {
-    event_type: eventType,
-    event_action: eventType,
+    event_action: PD.Trigger,
+    event_type: PD.Trigger,
     description: body.attributes.properties.trigger + " : " + body.attributes.computer_name,
     severity: severity,
-    priority: priority,
     source_origin: body.attributes.computer_name,
-    dedup_key: body.attributes.id.toString(),
-    service_group: body.attributes.customer.id.toString(),
+  	incident_key: body.attributes.computer_name,
     details: {
-        asset: body.attributes.computer_name,  
+        asset: body.attributes.computer_name,
+        location: body.attributes.customer.business_name,
         alert_text: body.text,
         link: body.link,
-      	resolved: body.attributes.resolved,
+        resolved: resolved,
     }
 };
 
