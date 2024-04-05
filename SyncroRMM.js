@@ -43,7 +43,7 @@ var cef_event = {
     details: {
         asset: body.attributes.computer_name,
         location: body.attributes.customer.business_name,
-        alert_text: body.text,
+        body: body.attributes.formatted_output,
         link: body.link,
         resolved: resolved,
     }
