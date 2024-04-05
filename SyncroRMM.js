@@ -7,18 +7,26 @@ var description = (body.attributes.resolved == "true") ? "Resolved: " + body.att
 // Define event type based on resolution status
 var eventType = (body.attributes.resolved == "true") ? PD.Resolve : PD.Trigger;
 
-// Set Alert Priority
-var priority = "sev3";
+// Check if "Auto Resolved" is in the description and set resolved accordingly
+//var resolved = "false";
+//if (description.toLowerCase().includes("auto resolved")) {
+//    resolved = "true";
+//}
 
-// Set Alert Severity
-var severity = "warning";
-// critical
-// error
-// warning
-// info
-// unknown
+// Define event type based on resolution status
+//var event_action;
+//if (resolved === "true") {
+//    event_action = PD.Resolve;
+//} else {
+//    event_action = PD.Trigger;
+//}
+
 
 // Set Severity based on trigger type
+// Set Alert Severity
+var severity = "warning";
+
+
 // critical
 if (body.attributes.properties.trigger == "agent_offline_trigger") { severity = "critical"; }
 // error
@@ -28,27 +36,10 @@ if (body.attributes.properties.trigger == "Low Hd Space Trigger") { severity = "
 // warning
 if (body.attributes.properties.trigger == "CPU Monitoring") { severity = "warning"; }
 if (body.attributes.properties.trigger == "Ram Monitoring") { severity = "warning"; }
-//todo
-//Dell Server Administrator
+// info
+// unknown
 
 
-
-
-// Set priority based on severity
-switch (severity) {
-    case "critical":
-        priority = "sev1";
-        break;
-    case "error":
-        priority = "sev2";
-        break;
-    case "warning":
-        priority = "sev3";
-        break;
-    case "info":
-        priority = "sev4";
-        break;
-}
 
 
 
@@ -56,7 +47,7 @@ switch (severity) {
 var cef_event = {
     event_type: eventType,
     event_action: eventType,
-    description: description + " : " + body.attributes.computer_name,
+    description: body.attributes.properties.trigger + " : " + body.attributes.computer_name,
     severity: severity,
     priority: priority,
     source_origin: body.attributes.computer_name,
