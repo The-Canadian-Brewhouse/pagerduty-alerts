@@ -1,12 +1,6 @@
-// Consume syncro alert via Webhook
+// Consume Meraki Alert via Webhook
 var body = PD.inputRequest.body;
-
-// If alert is resolved, then append description with "resolved"
-var resolved = body.attributes.resolved;
-var description = (resolved == "true") ? "Resolved: " + body.attributes.properties.description : body.attributes.properties.description;
-
-// Set Alert Priority
-var priority = "sev3";
+var emitEvent = true;
 
 // Set Alert Severity
 var severity = "warning";
@@ -16,48 +10,28 @@ var severity = "warning";
 // info
 // unknown
 
-if (body.attributes.properties.trigger == "agent_offline_trigger") { severity = "critical"; }
-if (body.attributes.properties.trigger == "Intel Rapid Storage Monitoring" && body.attributes.formatted_output.includes("Volume RAIDVOL: Verification and repair in progress.")) { 
-    severity = "error"; 
-}
-if (body.attributes.properties.trigger == "CPU Monitoring") { severity = "warning"; }
+if(body.alertType == "Settings changed") {severity = "info";}
+if(body.alertType == "Motion detected") {severity = "info";}
+if(body.alertType == "Network usage alert") {severity = "warning";}
+if(body.alertType == "Client IP conflict detected") {severity = "warning";}
+if(body.alertType == "APs went down") {severity = "critical";}
+if(body.alertType == "Uplink status changed" && !body.alertData.uplink) {severity = "critical";}
+
+// Clear irrelavent ip conflict alerts
+if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("172.16"))){emitEvent = false;}
+if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("1.1.1.1"))){emitEvent = false;}
 
 
-// Set priority based on severity
-switch (severity) {
-    case "critical":
-        priority = "sev1";
-        break;
-    case "error":
-        priority = "sev2";
-        break;
-    case "warning":
-        priority = "sev3";
-        break;
-    case "info":
-        priority = "sev4";
-        break;
-}
-
-// Define event type based on resolution status
-var eventType = (resolved == "true") ? PD.Resolve : PD.Trigger;
-
-// Define the event payload
+// Format payload
 var cef_event = {
-    event_type: eventType,
-    event_action: eventType,
-    description: description,
-    severity: severity,
-    priority: priority,
-    source_origin: body.attributes.computer_name,
-    dedup_key: body.attributes.id.toString(),
-    service_group: body.attributes.customer.id.toString(),
-    details: {
-        asset: body.attributes.computer_name,  
-        alert_text: body.text,
-        link: body.link
-    }
-};
+event_type: PD.Trigger,
+description: body.alertType,
+severity: severity,
+source_origin: body.networkId,
+dedup_key: body.alertId,
+service_group: body.organizationId,
+event_action: PD.Trigger,
+details: body
+}
 
-// Emit the event
-PD.emitCEFEvents([cef_event]);
+if (emitEvent === true){PD.emitCEFEvents([cef_event]);}
