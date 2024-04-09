@@ -25,7 +25,7 @@ if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictin
 // Format payload
 var cef_event = {
 event_type: PD.Trigger,
-description: body.alertType,
+description: body.alertType + ": " + body.networkId,
 severity: severity,
 source_origin: body.networkId,
 dedup_key: body.alertId,
@@ -34,4 +34,4 @@ event_action: PD.Trigger,
 details: body
 }
 
-if (emitEvent === true){PD.emitCEFEvents([cef_event]);}
+if (emitEvent){PD.emitCEFEvents([cef_event]);}

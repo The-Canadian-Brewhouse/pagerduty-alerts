@@ -1,5 +1,6 @@
 // Consume syncro alert via Webhook
 var body = PD.inputRequest.body;
+var emitEvent = true;
 
 // If alert is resolved, then append description with "resolved"
 var description = body.attributes.properties.description;
@@ -32,6 +33,12 @@ if (body.attributes.properties.trigger == "Ram Monitoring") { severity = "warnin
 // info
 // unknown
 
+// Clear irrelavent alerts
+if (body.attributes.properties.trigger == "Intel Rapid Storage Monitoring" && (body.attributes.formatted_output.includes("2 new event matches triggered"))){emitEvent = false;}
+
+
+
+
 // Define the event payload
 var cef_event = {
     event_action: PD.Trigger,
@@ -50,4 +57,4 @@ var cef_event = {
 };
 
 // Emit the event
-PD.emitCEFEvents([cef_event]);
+if (emitEvent){PD.emitCEFEvents([cef_event]);}
