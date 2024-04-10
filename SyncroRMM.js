@@ -11,6 +11,16 @@ var resolved = body.attributes.resolved;
 //    resolved = "true";
 //}
 
+
+
+// Define location if it exists
+
+if (body.attributes.customer.business_name) {
+	var location = body.attributes.customer.business_name
+} else {
+    var location = body.attributes.computer_name
+}
+
 // Define event type based on resolution status
 //var event_action;
 //if (resolved === "true") {
@@ -54,7 +64,7 @@ var cef_event = {
   	incident_key: body.attributes.computer_name,
     details: {
         asset: body.attributes.computer_name,
-        location: body.attributes.customer.business_name,
+        location: location,
         body: body.attributes.formatted_output,
         link: body.link,
         resolved: resolved,
