@@ -1,5 +1,6 @@
 // Consume syncro alert via Webhook
 var body = PD.inputRequest.body;
+var emitEvent = true;
 
 // If alert is resolved, then append description with "resolved"
 var description = body.attributes.properties.description;
@@ -30,7 +31,18 @@ if (body.attributes.properties.trigger == "Low Hd Space Trigger") { severity = "
 if (body.attributes.properties.trigger == "CPU Monitoring") { severity = "warning"; }
 if (body.attributes.properties.trigger == "Ram Monitoring") { severity = "warning"; }
 // info
+if (body.attributes.properties.trigger == "Dell Server Administrator" && body.attributes.formatted_output.includes("critical")){ severity = "info"; }
+else{emitEvent = false;}
 // unknown
+
+// Clear irrelavent alerts
+if (body.attributes.properties.trigger == "Intel Rapid Storage Monitoring" && (body.attributes.formatted_output.includes("2 new event matches triggered"))){emitEvent = false;}
+if (body.attributes.properties.trigger == "ps_monitor"){emitEvent = false;}
+if (body.attributes.properties.trigger == "Firewall"){emitEvent = false;}
+if (body.attributes.properties.trigger == "IPv6"){emitEvent = false;}
+
+
+
 
 // Define the event payload
 var cef_event = {
@@ -50,4 +62,4 @@ var cef_event = {
 };
 
 // Emit the event
-PD.emitCEFEvents([cef_event]);
+if (emitEvent){PD.emitCEFEvents([cef_event]);}
