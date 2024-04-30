@@ -15,11 +15,11 @@ var resolved = body.attributes.resolved;
 
 // Define location if it exists
 
-if (body.attributes.customer.business_name) {
-	var location = body.attributes.customer.business_name
-} else {
+//if (body.attributes.customer.business_name) {
+//	var location = body.attributes.customer.business_name
+//} else {
     var location = body.attributes.computer_name
-}
+//}
 
 // Define event type based on resolution status
 //var event_action;
