@@ -22,8 +22,7 @@ if(body.alertType == "Cellular came up") {severity = "critical";}
 // Clear irrelavent ip conflict alerts
 if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("172."))){emitEvent = false;}
 if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("1.1.1.1"))){emitEvent = false;}
-if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("10.100.80"))){emitEvent = false;}
-
+if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("192."))){emitEvent = false;}
 
 // Clear irrelavent Rogue AP alerts
 var rogueApBlacklist = [
@@ -35,10 +34,15 @@ var rogueApBlacklist = [
     "DIRECT-roku-82U-11163E",
     "DIRECT-JADESKTOP-IHRHN1TKAQD"
   ];
-  
-  if ((body.alertType == "Air Marshal - Rogue AP detected") && (rogueApBlacklist.includes(body.alertData.ssidName))) {
-    emitEvent = false;
-  }
+if ((body.alertType == "Air Marshal - Rogue AP detected") && (rogueApBlacklist.includes(body.alertData.ssidName))) {emitEvent = false;}
+if ((body.alertType == "Air Marshal - Rogue AP detected") && (body.alertData.ssidName.includes("Meraki"))) {emitEvent = false;}
+if ((body.alertType == "Air Marshal - Rogue AP detected") && (body.alertData.ssidName.includes("roku"))) {emitEvent = false;}
+
+// clear irrelavent dhcp alerts
+if ((body.alertType == "New DHCP server detected") && (body.alertData.ip.includes(".126"))) {emitEvent = false;}
+if ((body.alertType == "New DHCP server detected") && (body.alertData.ip.includes(".190"))) {emitEvent = false;}
+if ((body.alertType == "New DHCP server detected") && (body.alertData.ip.includes(".222"))) {emitEvent = false;}
+
 
 // Format payload
 var cef_event = {
