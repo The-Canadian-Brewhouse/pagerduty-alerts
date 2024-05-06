@@ -15,8 +15,10 @@ if(body.alertType == "Motion detected") {severity = "info";}
 if(body.alertType == "Network usage alert") {severity = "warning";}
 if(body.alertType == "Client IP conflict detected") {severity = "warning";}
 if(body.alertType == "APs went down") {severity = "critical";}
-if(body.alertType == "Uplink status changed" && !body.alertData.uplink) {severity = "critical";}
-if(body.alertType == "Cellular came up") {severity = "critical";}
+if(body.alertType == "Uplink status changed" && !body.alertData.uplink && body.networkName != "PLD-Seton") {severity = "warning";}
+if(body.alertType == "Cellular came up") {severity = "warning";}
+if(body.alertType == "appliances went down") {severity = "critical";}
+if(body.alertType == "switches went down") {severity = "critical";}
 
 
 // Clear irrelavent ip conflict alerts
