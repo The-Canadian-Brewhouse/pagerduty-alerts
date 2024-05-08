@@ -17,10 +17,11 @@ const alertSeverityMap = {
   "Client IP conflict detected": "warning",
   "Cellular came up": "warning",
   "appliances went down": "critical",
-  "switches went down": "critical",
   "appliances came up": "critical",
+  "switches went down": "critical",
   "switches came up": "critical",
-  "APs went down": "critical"
+  "APs went down": "critical",
+  "APs came up": "critical"
 };
 let severity = alertSeverityMap[body.alertType];
 if(body.alertType == "Uplink status changed" && !body.alertData.uplink && body.networkName != "PLD-Seton") {severity = "warning";}
