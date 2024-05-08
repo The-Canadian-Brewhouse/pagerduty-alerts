@@ -27,35 +27,50 @@ let severity = alertSeverityMap[body.alertType];
 if(body.alertType == "Uplink status changed" && !body.alertData.uplink && body.networkName != "PLD-Seton") {severity = "warning";}
 
 
-// Clear irrelavent ip conflict alerts
-//ips
-if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("172."))){emitEvent = false;}
-if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("1.1.1.1"))){emitEvent = false;}
-if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("192."))){emitEvent = false;}
-if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("10.100.80.40"))){emitEvent = false;}
-//macs
-if(body.alertType == "Client IP conflict detected" && (body.alertData.contendingMac.includes("F6:43:BB:20:E6:5A"))){emitEvent = false;}
+// Clear irrelavent IP conflict alerts
+if (body.alertType === "Client IP conflict detected") {
+  
+  // Clear irrelevant IP conflict alerts based on IP addresses
+  if (body.alertData.conflictingIp.includes("172.") ||
+      body.alertData.conflictingIp.includes("1.1.1.1") ||
+      body.alertData.conflictingIp.includes("192.") ||
+      body.alertData.conflictingIp.includes("10.100.80.40")) {
+        emitEvent = false;
+  }
+  
+  // Clear irrelevant IP conflict alerts based on MAC addresses
+  var ipConflictMacBlacklist = [
+      "F6:43:BB:20:E6:5A",
+      "DA:18:DF:A1:0D:E2"
+  ];
+  if (ipConflictMacBlacklist.includes(body.alertData.contendingMac)) {emitEvent = false;}
+
+}
 
 
 // Clear irrelavent Rogue AP alerts
 var rogueApBlacklist = [
-    "meraki-scanning",
-    "Meraki Setup",
-    "Meraki Setup-scanning",
-    "DIRECT-roku-UP6-693338",
-    "DIRECT-roku-801-92CE85",
-    "DIRECT-roku-82U-11163E",
-    "DIRECT-JADESKTOP-IHRHN1TKAQD"
-  ];
+  "meraki-scanning",
+  "Meraki Setup",
+  "Meraki Setup-scanning",
+  "DIRECT-roku-UP6-693338",
+  "DIRECT-roku-801-92CE85",
+  "DIRECT-roku-82U-11163E",
+  "DIRECT-JADESKTOP-IHRHN1TKAQD"
+];
 if ((body.alertType == "Air Marshal - Rogue AP detected") && (rogueApBlacklist.includes(body.alertData.ssidName))) {emitEvent = false;}
 if ((body.alertType == "Air Marshal - Rogue AP detected") && (body.alertData.ssidName.includes("Meraki"))) {emitEvent = false;}
 if ((body.alertType == "Air Marshal - Rogue AP detected") && (body.alertData.ssidName.includes("roku"))) {emitEvent = false;}
 
 
-// clear irrelavent dhcp alerts
-if ((body.alertType == "New DHCP server detected") && (body.alertData.ip.includes(".126"))) {emitEvent = false;}
-if ((body.alertType == "New DHCP server detected") && (body.alertData.ip.includes(".190"))) {emitEvent = false;}
-if ((body.alertType == "New DHCP server detected") && (body.alertData.ip.includes(".222"))) {emitEvent = false;}
+// Clear irrelavent DHCP server alerts
+if (body.alertType === "New DHCP server detected") {
+    if (body.alertData.ip.includes(".126") ||
+        body.alertData.ip.includes(".190") ||
+        body.alertData.ip.includes(".222")) {
+          emitEvent = false;
+    }
+}
 
 
 // Format payload
