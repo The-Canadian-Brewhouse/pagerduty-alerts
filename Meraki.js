@@ -22,10 +22,13 @@ if(body.alertType == "switches went down") {severity = "critical";}
 
 
 // Clear irrelavent ip conflict alerts
+//ips
 if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("172."))){emitEvent = false;}
 if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("1.1.1.1"))){emitEvent = false;}
 if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("192."))){emitEvent = false;}
 if(body.alertType == "Client IP conflict detected" && (body.alertData.conflictingIp.includes("10.100.80.40"))){emitEvent = false;}
+//macs
+if(body.alertType == "Client IP conflict detected" && (body.alertData.contendingMac.includes("F6:43:BB:20:E6:5A"))){emitEvent = false;}
 
 
 // Clear irrelavent Rogue AP alerts
