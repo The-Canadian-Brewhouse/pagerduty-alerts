@@ -48,7 +48,7 @@ if (body.alertType === "Client IP conflict detected") {
 }
 
 
-// Clear irrelavent Rogue AP alerts
+// Clear irrelavent Rogue AP alertss
 var rogueApBlacklist = [
   "meraki-scanning",
   "Meraki Setup",
