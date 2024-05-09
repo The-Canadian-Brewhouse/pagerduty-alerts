@@ -23,7 +23,7 @@ const alertSeverityMap = {
   "APs went down": "critical",
   "APs came up": "critical"
 };
-let severity = alertSeverityMap[body.alertType];
+severity = alertSeverityMap[body.alertType];
 if(body.alertType == "Uplink status changed" && !body.alertData.uplink && body.networkName != "PLD-Seton") {severity = "warning";}
 
 
