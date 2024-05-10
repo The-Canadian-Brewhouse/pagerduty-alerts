@@ -1,26 +1,10 @@
-// Consume syncro alert via Webhook
-var body = PD.inputRequest.body;
-var emitEvent = true;
-
 // If alert is resolved, then append description with "resolved"
 var description = body.attributes.properties.description;
-
 // Check if "Auto Resolved" is in the description and set resolved accordingly
 var resolved = body.attributes.resolved;
 //if (description.toLowerCase().includes("auto resolved")) {
 //    resolved = "true";
 //}
-
-
-
-// Define location if it exists
-
-//if (body.attributes.customer.business_name) {
-//	var location = body.attributes.customer.business_name
-//} else {
-    var location = body.attributes.computer_name
-//}
-
 // Define event type based on resolution status
 //var event_action;
 //if (resolved === "true") {
@@ -28,48 +12,74 @@ var resolved = body.attributes.resolved;
 //} else {
 //    event_action = PD.Trigger;
 //}
+// Consume syncro alert via Webhook
+
+
+let body = PD.inputRequest.body;
+let emitEvent = true;
+let severity = "warning";
+let trigger = body.attributes.properties.trigger;
+
+
+// Define location if it exists
+let location;
+if (typeof body.attributes.customer.business_name !== 'undefined') {
+    location = body.attributes.customer.business_name;
+} else {
+    location = body.attributes.computer_name;
+}
+
 
 // Set Severity based on trigger type
-var severity = "warning";
-// critical
-if (body.attributes.properties.trigger == "agent_offline_trigger") { severity = "critical"; }
-// error
-if (body.attributes.properties.trigger == "Intel Rapid Storage Monitoring" && body.attributes.formatted_output.includes("Volume RAIDVOL: Verification and repair in progress.")) { severity = "error"; }
-if (body.attributes.properties.trigger == "Oracle Authentication Error") { severity = "error"; }
-if (body.attributes.properties.trigger == "Low Hd Space Trigger") { severity = "error"; }
-// warning
-if (body.attributes.properties.trigger == "CPU Monitoring") { severity = "warning"; }
-if (body.attributes.properties.trigger == "Ram Monitoring") { severity = "warning"; }
-// info
-if (body.attributes.properties.trigger == "Dell Server Administrator" && body.attributes.formatted_output.includes("critical")){ severity = "info"; }
-else{emitEvent = false;}
-// unknown
+switch (trigger) {
+    case "agent_offline_trigger":
+        severity = "critical";
+        trigger = "Server offline";
+        break;
+    case "Intel Rapid Storage Monitoring":
+        if (body.attributes.formatted_output.includes("Volume RAIDVOL: Verification and repair in progress.")) {severity = "error";}
+        break;
+    case "Oracle Authentication Error":
+    case "Low Hd Space Trigger":
+        severity = "error";
+        break;
+    case "CPU Monitoring":
+    case "Ram Monitoring":
+        severity = "warning";
+        break;
+    case "Dell Server Administrator":
+        severity = "info";
+        if (!body.attributes.formatted_output.includes("critical")) {emitEvent = false;}
+        break;
+}
 
-// Clear irrelavent alerts
-if (body.attributes.properties.trigger == "Intel Rapid Storage Monitoring" && (body.attributes.formatted_output.includes("2 new event matches triggered"))){emitEvent = false;}
-if (body.attributes.properties.trigger == "ps_monitor"){emitEvent = false;}
-if (body.attributes.properties.trigger == "Firewall"){emitEvent = false;}
-if (body.attributes.properties.trigger == "IPv6"){emitEvent = false;}
 
-
+// Clear irrelevant alerts
+const irrelevantTriggers = ["ps_monitor", "Firewall", "IPv6"];
+if (irrelevantTriggers.includes(trigger) || 
+    body.attributes.formatted_output === "This process was not running: KDSDisplay" ||
+    body.attributes.formatted_output === "This service was not running: givexSV") {
+    emitEvent = false;
+}
 
 
 // Define the event payload
-var cef_event = {
+const cef_event = {
     event_action: PD.Trigger,
-    event_type: PD.Trigger,
-    description: body.attributes.properties.trigger + " : " + body.attributes.computer_name,
+    description: "Client IP conflict detected: P1018-Fort_Saskatchewan",
+    //trigger + ": " + body.attributes.computer_name,
     severity: severity,
-    source_origin: body.attributes.computer_name,
-  	incident_key: body.attributes.computer_name,
+    source_origin: location,
     details: {
         asset: body.attributes.computer_name,
         location: location,
         body: body.attributes.formatted_output,
         link: body.link,
-        resolved: resolved,
     }
 };
 
-// Emit the event
-if (emitEvent){PD.emitCEFEvents([cef_event]);}
+
+// Emit the payload
+if (emitEvent) {
+    PD.emitCEFEvents([cef_event]);
+}
