@@ -1,0 +1,550 @@
+{
+    "text": "RMM Alert\nP32CAPS\n\nClient:  (Customer: CBH | Calgary - Northgate [P32]).\n\nAgent Offline Trigger: Asset went offline at 2024-04-03 21:36:28\n-0600 and is now past the threshold to alert.",
+    "html": "RMM Alert \n P32CAPS \n\n Client:  (Customer: CBH | Calgary - Northgate [P32]).<br><br>Agent Offline Trigger: Asset went offline at 2024-04-03 21:36:28 -0600 and is now past the threshold to alert.",
+    "link": "https://tcbh.syncromsp.com/rmm_alerts/448633273",
+    "attributes": {
+        "id": 448633273,
+        "customer_id": 28403311,
+        "ticket_number": null,
+        "ticket_status": null,
+        "computer_name": "P32CAPS",
+        "properties": {
+            "trigger": "agent_offline_trigger",
+            "description": "Agent Offline Trigger",
+            "formatted_output": "Asset went offline at 2024-04-03 21:36:28 -0600 and is now past the threshold to alert.",
+            "device_id": 2291108,
+            "generated_kabuto_customer_id": 1064321
+        },
+        "Resolvd": false,
+        "check_id": null,
+        "status": null,
+        "formatted_output": "Asset went offline at 2024-04-03 21:36:28 -0600 and is now past the threshold to alert.",
+        "description": "Agent Offline Trigger",
+        "created_at": "2024-04-03T22:42:04.572-06:00",
+        "updated_at": "2024-04-03T22:42:04.572-06:00",
+        "customer": {
+            "id": 28403311,
+            "firstname": "",
+            "lastname": "",
+            "fullname": "(empty)",
+            "business_name": "CBH | Calgary - Northgate [P32]",
+            "email": null,
+            "phone": null,
+            "mobile": null,
+            "created_at": "2022-12-21T10:52:44.982-07:00",
+            "updated_at": "2022-12-21T11:07:20.973-07:00",
+            "pdf_url": null,
+            "address": "",
+            "address_2": "",
+            "city": "",
+            "state": "AB",
+            "zip": "",
+            "latitude": null,
+            "longitude": null,
+            "notes": null,
+            "get_sms": false,
+            "opt_out": false,
+            "disabled": false,
+            "no_email": false,
+            "location_name": null,
+            "location_id": null,
+            "properties": {
+                "Network": "44735",
+                "POS System": "44730",
+                "notification_billing": "1",
+                "notification_reports": "1",
+                "notification_marketing": "1"
+            },
+            "online_profile_url": null,
+            "tax_rate_id": null,
+            "notification_email": "",
+            "invoice_cc_emails": "",
+            "invoice_term_id": null,
+            "referred_by": "",
+            "ref_customer_id": null,
+            "business_and_full_name": "CBH | Calgary - Northgate [P32]",
+            "business_then_name": "CBH | Calgary - Northgate [P32]",
+            "contacts": []
+        },
+        "since_updated_at": "2024-04-03T22:42:04.572-06:00",
+        "asset": {
+            "id": 7700457,
+            "name": "P32CAPS",
+            "customer_id": 28403311,
+            "contact_id": null,
+            "created_at": "2022-12-21T10:19:15.719-07:00",
+            "updated_at": "2024-04-03T17:19:41.550-06:00",
+            "properties": {
+                "generated_kabuto_customer_id": 1064321,
+                "device_name": "P32CAPS",
+                "monitoring": true,
+                "mav": false,
+                "policy_id": null,
+                "computer_uuid": "8e804b22-9587-4ea6-b78d-b4ddcacd6ca2",
+                "kabuto_live_uuid": "a018c6a8-4d30-42a9-bfc9-36ab18a35758",
+                "agent_version": "1.0.182.0",
+                "live_agent_version": null,
+                "profile_folder_size": 0,
+                "kabuto_information": {
+                    "last_user": "P32CAPS\\masteraccount",
+                    "ram_gb": 8,
+                    "profile_folder_size": 0,
+                    "general": {
+                        "name": "P32CAPS",
+                        "manufacturer": "Hewlett-Packard",
+                        "model": "HP RP5 Retail System Model 5810",
+                        "serial_number": "2UA8501P80",
+                        "ip": "66.11.80.25",
+                        "form_factor": "desktop",
+                        "domain": "",
+                        "mac": [
+                            "68-05-CA-8E-A4-DF",
+                            "10-E7-C6-37-76-0B"
+                        ],
+                        "agent_version": "1.0.182.0"
+                    },
+                    "os": {
+                        "name": "Microsoft Windows 10 Enterprise 2016 LTSB",
+                        "last_boot_time": "2024-04-03T13:06:03Z",
+                        "build": "14393.6796",
+                        "os_architecture": "64-bit",
+                        "windows_release_version": "1607",
+                        "pending_reboot": false
+                    },
+                    "motherboard": {
+                        "name": "Base Board",
+                        "manufacturer": "Hewlett-Packard"
+                    },
+                    "cpu": [
+                        {
+                            "name": "Intel(R) Pentium(R) CPU G3420 @ 3.20GHz",
+                            "manufacturer": "GenuineIntel"
+                        }
+                    ],
+                    "hdd": [
+                        {
+                            "manufacturer": "Intel Raid 1 Volume",
+                            "size": "465.75 GB"
+                        }
+                    ],
+                    "network_adapters": [
+                        {
+                            "name": "Ethernet",
+                            "description": "Intel(R) Ethernet I210-T1 GbE NIC",
+                            "type": "ethernet",
+                            "ipv4": "169.254.92.201",
+                            "ipv6": "",
+                            "subnet": "255.255.0.0",
+                            "gateway": "",
+                            "dns1": "",
+                            "dns2": "",
+                            "dhcp_server": "",
+                            "physical_address": "68-05-CA-8E-A4-DF",
+                            "lease_obtained": "",
+                            "lease_expires": "",
+                            "dhcp_enabled": true,
+                            "autoconfiguration_enabled": true
+                        },
+                        {
+                            "name": "Ethernet 2",
+                            "description": "Intel(R) Ethernet Connection I217-LM",
+                            "type": "ethernet",
+                            "ipv4": "10.1.32.250",
+                            "ipv6": "",
+                            "subnet": "255.255.255.0",
+                            "gateway": "10.1.32.1",
+                            "dns1": "10.1.32.1",
+                            "dns2": "",
+                            "dhcp_server": "",
+                            "physical_address": "10-E7-C6-37-76-0B",
+                            "lease_obtained": "",
+                            "lease_expires": "",
+                            "dhcp_enabled": false,
+                            "autoconfiguration_enabled": true
+                        }
+                    ],
+                    "ram": [
+                        {
+                            "size": "8 GB",
+                            "manufacturer": "Micron"
+                        }
+                    ],
+                    "av": [
+                        {
+                            "name": "Windows Defender",
+                            "version": "No version",
+                            "machine_id": null,
+                            "instance_id": null
+                        }
+                    ],
+                    "video_card": [
+                        {
+                            "name": "Intel(R) HD Graphics"
+                        }
+                    ],
+                    "system_partition": {
+                        "size_gb": "464",
+                        "free_gb": "380",
+                        "free_percent": 82
+                    },
+                    "fixed_disks_total": {
+                        "size_gb": "464",
+                        "free_gb": "380",
+                        "free_percent": 82
+                    },
+                    "primary_adapter": {
+                        "gateway": "10.1.32.1",
+                        "ipv4": "10.1.32.250",
+                        "ipv6": "",
+                        "dns1": "10.1.32.1",
+                        "dns2": "",
+                        "subnet": "255.255.255.0",
+                        "name": "Ethernet 2",
+                        "type": "ethernet",
+                        "description": "Intel(R) Ethernet Connection I217-LM"
+                    },
+                    "install_dates": {
+                        "os_install": "2019-02-02T03:17:01Z",
+                        "bios_release": "2018-07-28T00:00:00Z",
+                        "system_volume": "2018-12-13T07:03:45Z"
+                    },
+                    "monitoring": true,
+                    "mav": false,
+                    "computer_uuid": "8e804b22-9587-4ea6-b78d-b4ddcacd6ca2",
+                    "kabuto_live_uuid": "a018c6a8-4d30-42a9-bfc9-36ab18a35758",
+                    "last_version": "1.0.182.0",
+                    "live_last_version": null,
+                    "device_name": "P32CAPS",
+                    "last_synced_at": "2024-04-03T23:19:37.000+00:00"
+                },
+                "form_factor": "Physical Desktop",
+                "bdmav": false,
+                "bdmav_installed": false,
+                "webroot_mav": false,
+                "webroot_cannot_match": null,
+                "webroot_installed": false,
+                "last_backup_reinstall_needed_at": "2024-04-03T19:15:39+00:00",
+                "remote_access": true,
+                "manufacturer": "Hewlett-Packard",
+                "model": "HP RP5 Retail System Model 5810",
+                "computer_name": "P32CAPS",
+                "mac": [
+                    "68-05-CA-8E-A4-DF",
+                    "10-E7-C6-37-76-0B"
+                ],
+                "TS-Debugging-Powershell-Classic-Version": "5.1.14393.0",
+                "os": "Microsoft Windows 10 Enterprise 2016 LTSB",
+                "last_boot": "2024-04-03T13:06:03Z",
+                "cpu_name": "Intel(R) Pentium(R) CPU G3420 @ 3.20GHz",
+                "hdd": "manufacturer:Intel Raid 1 Volume, size:465.75 GB",
+                "ram": "size:8 GB, manufacturer:Micron",
+                "av": "name:Windows Defender, version:No version",
+                "Splashtop UUID": "545fcd03657b5e123d1adbc381223773",
+                "syncro_splashtop_uuid": "545fcd03657b5e123d1adbc381223773",
+                "syncro_splashtop_password": "d0521a6742f10d63",
+                "ScreenConnect GUID": null
+            },
+            "asset_type": "Syncro Device",
+            "asset_serial": "2UA8501P80",
+            "external_rmm_link": "https://tcbh.syncromsp.com/customer_assets/7700457",
+            "customer": {
+                "id": 28403311,
+                "firstname": "",
+                "lastname": "",
+                "fullname": "(empty)",
+                "business_name": "CBH | Calgary - Northgate [P32]",
+                "email": null,
+                "phone": null,
+                "mobile": null,
+                "created_at": "2022-12-21T10:52:44.982-07:00",
+                "updated_at": "2022-12-21T11:07:20.973-07:00",
+                "pdf_url": null,
+                "address": "",
+                "address_2": "",
+                "city": "",
+                "state": "AB",
+                "zip": "",
+                "latitude": null,
+                "longitude": null,
+                "notes": null,
+                "get_sms": false,
+                "opt_out": false,
+                "disabled": false,
+                "no_email": false,
+                "location_id": null,
+                "properties": {
+                    "Network": "44735",
+                    "POS System": "44730",
+                    "notification_billing": "1",
+                    "notification_reports": "1",
+                    "notification_marketing": "1"
+                },
+                "online_profile_url": null,
+                "tax_rate_id": null,
+                "notification_email": "",
+                "invoice_cc_emails": "",
+                "invoice_term_id": null,
+                "referred_by": "",
+                "ref_customer_id": null,
+                "business_and_full_name": "CBH | Calgary - Northgate [P32]",
+                "business_then_name": "CBH | Calgary - Northgate [P32]"
+            },
+            "rmm_links": [
+                {
+                    "internal_link": "https://tcbh.syncromsp.com/customer_assets/7700457",
+                    "teamviewer_link": null,
+                    "screenconnect_link": null,
+                    "splashtop_link": null
+                }
+            ],
+            "has_live_chat": false,
+            "snmp_enabled": null,
+            "device_info": {
+                "snmp_config": {
+                    "port": 161,
+                    "enabled": false,
+                    "version": 2,
+                    "community": "public"
+                }
+            },
+            "since_updated_at": "2024-04-03T17:19:41.550-06:00",
+            "rmm_store": {
+                "id": 6095915,
+                "asset_id": 7700457,
+                "account_id": 72654,
+                "triggers": {
+                    "bsod_triggered": "false",
+                    "time_triggered": "false",
+                    "no_av_triggered": "false",
+                    "defrag_triggered": "false",
+                    "firewall_triggered": "false",
+                    "app_crash_triggered": "false",
+                    "low_hd_space_triggered": "false",
+                    "agent_offline_triggered": "Asset went offline at 2024-04-03 21:36:28 -0600 and is now past the threshold to alert.",
+                    "smart_failure_triggered": "false",
+                    "device_manager_triggered": "false"
+                },
+                "windows_updates": {
+                    "wu_schedule": {
+                        "day": 0,
+                        "hour": 3,
+                        "active_start": 8,
+                        "active_end": 17
+                    },
+                    "wu_available": null,
+                    "wu_latest": null,
+                    "windows_update": "wu_on",
+                    "wu_error": null
+                },
+                "emsisoft": {
+                    "id": 2291080,
+                    "device_id": 2291108,
+                    "device_mav_state": {
+                        "running": false,
+                        "anti_phishing": null,
+                        "install_state": "uninstalled",
+                        "engine_version": null,
+                        "product_version": null,
+                        "product_directory": null,
+                        "real_time_protection": null
+                    },
+                    "real_time_protection": true,
+                    "scan": false,
+                    "license": null,
+                    "own_license": null,
+                    "own_license_expires_at": null,
+                    "email_notifications": {
+                        "ap_disabled": true,
+                        "rtp_disabled": true,
+                        "last_scan_since": true,
+                        "threats_detected": true
+                    },
+                    "scan_schedule": "weekly",
+                    "anti_phishing": true,
+                    "running": true,
+                    "enabled": false,
+                    "eam_settings": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        1,
+                        5,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "scan_opts": {
+                        "silent": true,
+                        "scan_type": 2,
+                        "quarantine": true
+                    },
+                    "schedule_opts": {
+                        "silent": false,
+                        "scan_type": null,
+                        "quarantine": false
+                    },
+                    "installed_at": null
+                },
+                "general": {
+                    "info": {
+                        "last_user": "P32CAPS\\masteraccount",
+                        "ram_gb": 8,
+                        "profile_folder_size": 0,
+                        "general": {
+                            "name": "P32CAPS",
+                            "manufacturer": "Hewlett-Packard",
+                            "model": "HP RP5 Retail System Model 5810",
+                            "serial_number": "2UA8501P80",
+                            "ip": "66.11.80.25",
+                            "form_factor": "desktop",
+                            "domain": "",
+                            "mac": [
+                                "68-05-CA-8E-A4-DF",
+                                "10-E7-C6-37-76-0B"
+                            ],
+                            "agent_version": "1.0.182.0"
+                        },
+                        "os": {
+                            "name": "Microsoft Windows 10 Enterprise 2016 LTSB",
+                            "last_boot_time": "2024-04-03T13:06:03Z",
+                            "build": "14393.6796",
+                            "os_architecture": "64-bit",
+                            "windows_release_version": "1607",
+                            "pending_reboot": false
+                        },
+                        "motherboard": {
+                            "name": "Base Board",
+                            "manufacturer": "Hewlett-Packard"
+                        },
+                        "cpu": [
+                            {
+                                "name": "Intel(R) Pentium(R) CPU G3420 @ 3.20GHz",
+                                "manufacturer": "GenuineIntel"
+                            }
+                        ],
+                        "hdd": [
+                            {
+                                "manufacturer": "Intel Raid 1 Volume",
+                                "size": "465.75 GB"
+                            }
+                        ],
+                        "network_adapters": [
+                            {
+                                "name": "Ethernet",
+                                "description": "Intel(R) Ethernet I210-T1 GbE NIC",
+                                "type": "ethernet",
+                                "ipv4": "169.254.92.201",
+                                "ipv6": "",
+                                "subnet": "255.255.0.0",
+                                "gateway": "",
+                                "dns1": "",
+                                "dns2": "",
+                                "dhcp_server": "",
+                                "physical_address": "68-05-CA-8E-A4-DF",
+                                "lease_obtained": "",
+                                "lease_expires": "",
+                                "dhcp_enabled": true,
+                                "autoconfiguration_enabled": true
+                            },
+                            {
+                                "name": "Ethernet 2",
+                                "description": "Intel(R) Ethernet Connection I217-LM",
+                                "type": "ethernet",
+                                "ipv4": "10.1.32.250",
+                                "ipv6": "",
+                                "subnet": "255.255.255.0",
+                                "gateway": "10.1.32.1",
+                                "dns1": "10.1.32.1",
+                                "dns2": "",
+                                "dhcp_server": "",
+                                "physical_address": "10-E7-C6-37-76-0B",
+                                "lease_obtained": "",
+                                "lease_expires": "",
+                                "dhcp_enabled": false,
+                                "autoconfiguration_enabled": true
+                            }
+                        ],
+                        "ram": [
+                            {
+                                "size": "8 GB",
+                                "manufacturer": "Micron"
+                            }
+                        ],
+                        "av": [
+                            {
+                                "name": "Windows Defender",
+                                "version": "No version",
+                                "machine_id": null,
+                                "instance_id": null
+                            }
+                        ],
+                        "video_card": [
+                            {
+                                "name": "Intel(R) HD Graphics"
+                            }
+                        ],
+                        "system_partition": {
+                            "size_gb": "464",
+                            "free_gb": "380",
+                            "free_percent": 82
+                        },
+                        "fixed_disks_total": {
+                            "size_gb": "464",
+                            "free_gb": "380",
+                            "free_percent": 82
+                        },
+                        "primary_adapter": {
+                            "gateway": "10.1.32.1",
+                            "ipv4": "10.1.32.250",
+                            "ipv6": "",
+                            "dns1": "10.1.32.1",
+                            "dns2": "",
+                            "subnet": "255.255.255.0",
+                            "name": "Ethernet 2",
+                            "type": "ethernet",
+                            "description": "Intel(R) Ethernet Connection I217-LM"
+                        },
+                        "install_dates": {
+                            "os_install": "2019-02-02T03:17:01Z",
+                            "bios_release": "2018-07-28T00:00:00Z",
+                            "system_volume": "2018-12-13T07:03:45Z"
+                        },
+                        "monitoring": true,
+                        "mav": false,
+                        "computer_uuid": "8e804b22-9587-4ea6-b78d-b4ddcacd6ca2",
+                        "kabuto_live_uuid": "a018c6a8-4d30-42a9-bfc9-36ab18a35758",
+                        "last_version": "1.0.182.0",
+                        "live_last_version": null,
+                        "device_name": "P32CAPS",
+                        "last_synced_at": "2024-04-03T23:19:37.000+00:00"
+                    },
+                    "recent": {
+                        "timestamp": "2024-04-03T22:38:16.626-06:00",
+                        "ram": "8.00 GB",
+                        "cpu": "Intel(R) Pentium(R) CPU G3420 @ 3.20GHz",
+                        "hdd": "465.75 GB",
+                        "last_user": "P32CAPS\\masteraccount"
+                    }
+                }
+            }
+        }
+    }
+}
