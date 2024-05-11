@@ -1,20 +1,4 @@
-// If alert is resolved, then append description with "resolved"
-var description = body.attributes.properties.description;
-// Check if "Auto Resolved" is in the description and set resolved accordingly
-var resolved = body.attributes.resolved;
-//if (description.toLowerCase().includes("auto resolved")) {
-//    resolved = "true";
-//}
-// Define event type based on resolution status
-//var event_action;
-//if (resolved === "true") {
-//    event_action = PD.Resolve;
-//} else {
-//    event_action = PD.Trigger;
-//}
 // Consume syncro alert via Webhook
-
-
 let body = PD.inputRequest.body;
 let emitEvent = true;
 let severity = "warning";
@@ -30,18 +14,25 @@ if (typeof body.attributes.customer.business_name !== 'undefined') {
 }
 
 
-// Set Severity based on trigger type
+// Set Severity and rename trigger based on trigger type
 switch (trigger) {
     case "agent_offline_trigger":
         severity = "critical";
         trigger = "Server offline";
         break;
     case "Intel Rapid Storage Monitoring":
-        if (body.attributes.formatted_output.includes("Volume RAIDVOL: Verification and repair in progress.")) {severity = "error";}
+    	severity = "error";
+    	trigger = "RAID Volume Degraded";
+    	if (body.attributes.formatted_output.includes("2 new event matches triggered") &&
+        	body.attributes.formatted_output.includes("Service started successfully.") &&
+        	body.attributes.formatted_output.includes("Started event manager")) {
+      			emitEvent = false;
+        }
         break;
     case "Oracle Authentication Error":
-    case "Low Hd Space Trigger":
+    case "low_hd_space_trigger":
         severity = "error";
+    	trigger = "Low Disk Space";
         break;
     case "CPU Monitoring":
     case "Ram Monitoring":
@@ -63,23 +54,42 @@ if (irrelevantTriggers.includes(trigger) ||
 }
 
 
+// Auto resolution logic, will attempt to close existing alerts if one comes in with "Auto resolved" in the description.
+let resolved = body.attributes.resolved;
+let description = body.attributes.properties.description;
+if (description.toLowerCase().includes("auto resolved")) {
+    resolved = "true";
+}
+
+// Define event type based on resolution status
+let eventType;
+if (resolved === "true") {
+    eventType = PD.Resolve;
+} else {
+    eventType= PD.Trigger;
+}
+
+    
 // Define the event payload
-const cef_event = {
-    event_action: PD.Trigger,
-    description: "Client IP conflict detected: P1018-Fort_Saskatchewan",
-    //trigger + ": " + body.attributes.computer_name,
+var normalized_event = {
+    event_action: eventType,
+  	event_type: eventType,
+    description: trigger + ": " + body.attributes.computer_name,
     severity: severity,
     source_origin: location,
+    incident_key: body.attributes.id,
+    dedup_key: body.attributes.id,
     details: {
         asset: body.attributes.computer_name,
         location: location,
         body: body.attributes.formatted_output,
         link: body.link,
+        resolved: resolved,
     }
 };
 
 
-// Emit the payload
+// Emit the event payload
 if (emitEvent) {
-    PD.emitCEFEvents([cef_event]);
+    PD.emitCEFEvents([normalized_event]);
 }
