@@ -52,7 +52,7 @@ switch (trigger) {
 
 
 // Clear irrelevant alerts
-const irrelevantTriggers = ["ps_monitor", "Firewall", "IPv6", "Powered Off VM"];
+const irrelevantTriggers = ["ps_monitor", "Firewall", "IPv6", "Powered Off VM", "Service tag capture"];
 if (irrelevantTriggers.includes(trigger)) {emitEvent = false;}
 
 
