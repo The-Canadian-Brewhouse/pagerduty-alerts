@@ -1,16 +1,22 @@
-// Consume syncro alert via Webhook
+// Assign variables
 let body = PD.inputRequest.body;
 let emitEvent = true;
 let severity = "warning";
 let trigger = body.attributes.properties.trigger;
-
-// Define location if it exists
+let computerName;
 let location;
+// Assign computerName and location if they exist
+if (typeof body.attributes.computer_name !== 'undefined') {
+    computerName = body.attributes.computer_name;
+} else {
+    computerName = "Unknown Device";
+}
 if (typeof body.attributes.customer.business_name !== 'undefined') {
     location = body.attributes.customer.business_name;
 } else {
-    location = body.attributes.computer_name;
+    location = computerName;
 }
+
 
 // Set Severity and rename trigger based on trigger type
 switch (trigger) {
@@ -21,7 +27,7 @@ switch (trigger) {
     case "Intel Rapid Storage Monitoring":
         severity = "error";
         trigger = "RAID Volume Degraded";
-        if (body.attributes.formatted_output.includes("2 new event matches triggered"){
+        if (body.attributes.formatted_output.includes("2 new event matches triggered")){
             if (body.attributes.formatted_output.includes("Service started successfully.") ||
                body.attributes.formatted_output.includes("Service has been successfully shut down.") &&
                body.attributes.formatted_output.includes("Started event manager")){
@@ -40,22 +46,21 @@ switch (trigger) {
         break;
     case "Dell Server Administrator":
         severity = "info";
-        if (!body.attributes.formatted_output.includes("critical")) {
-            emitEvent = false;
-        }
+        if (!body.attributes.formatted_output.includes("critical")) {emitEvent = false;}
         break;
 }
+
 
 // Clear irrelevant alerts
 const irrelevantTriggers = ["ps_monitor", "Firewall", "IPv6", "Powered Off VM"];
 if (irrelevantTriggers.includes(trigger)) {emitEvent = false;}
 
+
 // Auto resolution logic, will attempt to close existing alerts if one comes in with "Auto resolved" in the description.
 let resolved = body.attributes.resolved;
 let description = body.attributes.properties.description;
-if (description.toLowerCase().includes("auto resolved")) {
-    resolved = "true";
-}
+if (description.toLowerCase().includes("auto resolved")) {resolved = "true";}
+
 
 // Define event type based on resolution status
 let eventType;
@@ -65,23 +70,25 @@ if (resolved === "true") {
     eventType = PD.Trigger;
 }
 
+
 // Define the event payload
 var normalized_event = {
     event_action: eventType,
     event_type: eventType,
-    description: trigger + ": " + body.attributes.computer_name,
+    description: trigger + ": " + computerName,
     severity: severity,
     source_origin: location,
     incident_key: body.attributes.id,
     dedup_key: body.attributes.id,
     details: {
-        asset: body.attribautes.computer_name,
+        asset: computerName,
         location: location,
         body: body.attributes.formatted_output,
         link: body.link,
         resolved: resolved,
     }
 };
+
 
 // Emit the event payload
 if (emitEvent) {
