@@ -36,6 +36,8 @@ switch (trigger) {
         }
         break;
     case "Oracle Authentication Error":
+        severity = "error";
+        break;
     case "low_hd_space_trigger":
         severity = "error";
         trigger = "Low Disk Space";
