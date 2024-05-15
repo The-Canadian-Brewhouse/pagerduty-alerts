@@ -5,6 +5,7 @@ let severity = "warning";
 let trigger = body.attributes.properties.trigger;
 let computerName;
 let location;
+
 // Assign computerName and location if they exist
 if (typeof body.attributes.computer_name !== 'undefined') {
     computerName = body.attributes.computer_name;
@@ -20,42 +21,47 @@ if (typeof body.attributes.customer.business_name !== 'undefined') {
 
 // Set Severity and rename trigger based on trigger type
 switch (trigger) {
-    case "agent_offline_trigger":
-        severity = "critical";
-        trigger = "Server offline";
-        break;
-    case "Intel Rapid Storage Monitoring":
-        severity = "error";
-        trigger = "RAID Volume Degraded";
-        if (body.attributes.formatted_output.includes("2 new event matches triggered")){
-            if (body.attributes.formatted_output.includes("Service started successfully.") ||
-               body.attributes.formatted_output.includes("Service has been successfully shut down.") &&
-               body.attributes.formatted_output.includes("Started event manager")){
-                emitEvent = false;
-            }
-        }
-        break;
-    case "Oracle Authentication Error":
-        severity = "error";
-        break;
-    case "low_hd_space_trigger":
-        severity = "error";
-        trigger = "Low Disk Space";
-        break;
-    case "CPU Monitoring":
-    case "Ram Monitoring":
-        severity = "warning";
-        break;
-    case "Dell Server Administrator":
-        severity = "info";
-        if (!body.attributes.formatted_output.includes("critical")) {emitEvent = false;}
-        break;
+  case "agent_offline_trigger":
+    severity = "critical";
+    trigger = "Server offline";
+    break;
+  case "Intel Rapid Storage Monitoring":
+    severity = "error";
+    trigger = "RAID Volume Degraded";
+    if (body.attributes.formatted_output.includes("2 new event matches triggered")) {
+      if (body.attributes.formatted_output.includes("Service started successfully.") ||
+          body.attributes.formatted_output.includes("Service has been successfully shut down.") &&
+          body.attributes.formatted_output.includes("Started event manager")) {
+        emitEvent = false;
+      }
+    }
+    break;
+  case "Oracle Authentication Error":
+    severity = "error";
+    break;
+  case "low_hd_space_trigger":
+    severity = "error";
+    trigger = "Low Disk Space";
+    break;
+  case "CPU Monitoring":
+  case "Ram Monitoring":
+    severity = "warning";
+    break;
+  case "Dell Server Administrator":
+    severity = "info";
+    if (!(body.attributes.formatted_output.includes("critical"))) {
+      emitEvent = false;
+    }
+    break;
+  // Clear irrelevant alerts
+  case "ps_monitor":
+  case "Firewall":
+  case "IPv6":
+  case "Powered Off VM":
+  case "Service tag capture":
+    emitEvent = false;
+    break;
 }
-
-
-// Clear irrelevant alerts
-const irrelevantTriggers = ["ps_monitor", "Firewall", "IPv6", "Powered Off VM", "Service tag capture"];
-if (irrelevantTriggers.includes(trigger)) {emitEvent = false;}
 
 
 // Auto resolution logic, will attempt to close existing alerts if one comes in with "Auto resolved" in the description.
