@@ -6,6 +6,17 @@ let trigger = body.attributes.properties.trigger;
 let computerName;
 let location;
 
+// Date logic, gets the date and then uses it to ignore alerts between certain times.
+// Gets the offset from the input date (in minutes) and converts it to milliseconds
+// Mountain Time is UTC-7 in Standard Time, and UTC-6 in Daylight Saving Time
+// Assume it's MDT (UTC-6) for simplicity, or adjust dynamically if needed
+const date = new Date(body.attributes.updated_at);
+const timezoneOffset = date.getTimezoneOffset() * 60000;
+const utcTime = date.getTime() + timezoneOffset;
+const mountainOffset = 6 * 60 * 60000; // 6 hours offset in milliseconds
+const mountainTime = new Date(utcTime - mountainOffset);
+
+
 // Assign computerName and location if they exist
 if (typeof body.attributes.computer_name !== 'undefined') {
     computerName = body.attributes.computer_name;
@@ -24,6 +35,10 @@ switch (trigger) {
   case "agent_offline_trigger":
     severity = "critical";
     trigger = "Server offline";
+    // Ignore server outages from 2am to 8am Mountain Time
+    if (mountainTime.getHours() >= 2 && mountainTime.getHours() < 8) {
+        emitEvent = false;
+    }
     break;
   case "Intel Rapid Storage Monitoring":
     severity = "error";
@@ -67,8 +82,9 @@ switch (trigger) {
 // Auto resolution logic, will attempt to close existing alerts if one comes in with "Auto resolved" in the description.
 let resolved = body.attributes.resolved;
 let description = body.attributes.properties.description;
-if (description.toLowerCase().includes("auto resolved")) {resolved = "true";}
-
+if (description.toLowerCase().includes("auto resolved")) {
+    resolved = "true";
+}
 
 // Define event type based on resolution status
 let eventType;
@@ -96,7 +112,6 @@ var normalized_event = {
         resolved: resolved,
     }
 };
-
 
 // Emit the event payload
 if (emitEvent) {
