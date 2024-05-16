@@ -41,11 +41,59 @@ switch (trigger) {
     break;
   case "New DHCP server detected":
     severity = "warning";
-    if (body.alertData.ip.includes(".126") ||
-        body.alertData.ip.includes(".190") ||
-        body.alertData.ip.includes(".222")) {
-      emitEvent = false;
-    }
+    var newDHCPServerWhitelist = [
+      "f8:9e:28:d8:c4:09",
+      "f8:9e:28:d8:7f:19",
+      "f8:9e:28:d8:97:99",
+      "f8:9e:28:d8:c5:99",
+      "f8:9e:28:d8:be:c9",
+      "f8:9e:28:d8:c7:29",
+      "f8:9e:28:d8:c3:e9",
+      "f8:9e:28:72:1d:2d",
+      "0c:7b:c8:c2:1f:4f",
+      "f8:9e:28:d8:bb:f9",
+      "c4:8b:a3:52:b4:9f",
+      "c4:8b:a3:52:b6:4f",
+      "c4:8b:a3:52:95:ef",
+      "0c:7b:c8:c3:dc:bf",
+      "0c:7b:c8:c3:b6:1f",
+      "0c:7b:c8:c3:e1:bf",
+      "0c:7b:c8:c3:bd:0f",
+      "0c:7b:c8:c3:dd:2f",
+      "0c:7b:c8:c3:ac:9f",
+      "0c:7b:c8:c1:fb:9f",
+      "0c:7b:c8:c2:25:cf",
+      "14:9f:43:2b:36:d8",
+      "14:9f:43:2b:37:88",
+      "f8:9e:28:d8:b0:49",
+      "f8:9e:28:72:1b:2d",
+      "f8:9e:28:72:03:9d",
+      "f8:9e:28:72:18:8d",
+      "f8:9e:28:d8:a6:29",
+      "f8:9e:28:d8:98:a9",
+      "f8:9e:28:71:fb:fd",
+      "f8:9e:28:d8:91:79",
+      "f8:9e:28:d8:c5:f9",
+      "f8:9e:28:d8:b1:d9",
+      "f8:9e:28:d8:7c:29",
+      "f8:9e:28:d8:9a:59",
+      "f8:9e:28:d8:af:a9",
+      "f8:9e:28:d8:91:99",
+      "f8:9e:28:d8:b0:19",
+      "f8:9e:28:d8:8b:19",
+      "c4:8b:a3:52:db:2f",
+      "f8:9e:28:d8:9c:49",
+      "f8:9e:28:d8:a7:49",
+      "f8:9e:28:d8:b2:89",
+      "f8:9e:28:d8:c6:49",
+      "f8:9e:28:d8:c7:59",
+      "f8:9e:28:d8:ad:99",
+      "f8:9e:28:d8:b9:49",
+      "f8:9e:28:d8:b9:d9",
+      "f8:9e:28:d8:bd:29",
+      "f8:9e:28:d8:b5:09",
+      ];
+    if (newDHCPServerWhitelist.includes(body.alertData.mac) {emitEvent = false;}
     break;
   case "appliances went down":
   case "appliances came up":
