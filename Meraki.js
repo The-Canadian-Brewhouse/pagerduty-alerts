@@ -93,7 +93,7 @@ switch (trigger) {
       "f8:9e:28:d8:bd:29",
       "f8:9e:28:d8:b5:09",
       ];
-    if (newDHCPServerWhitelist.includes(body.alertData.mac) {emitEvent = false;}
+    if (newDHCPServerWhitelist.includes(body.alertData.mac)) {emitEvent = false;}
     break;
   case "appliances went down":
   case "appliances came up":
