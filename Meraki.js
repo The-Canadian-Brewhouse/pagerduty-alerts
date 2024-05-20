@@ -25,6 +25,7 @@ switch (trigger) {
     break;
   case "Client IP conflict detected":
     severity = "warning";
+    emitEvent = false;
     // Clear irrelevant IP conflict alerts based on IP addresses
     if (body.alertData.conflictingIp.includes("172.") ||
         body.alertData.conflictingIp.includes("1.1.1.1") ||
