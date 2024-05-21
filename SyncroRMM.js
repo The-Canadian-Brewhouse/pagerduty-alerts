@@ -36,7 +36,7 @@ switch (trigger) {
     severity = "critical";
     trigger = "Server offline";
     // Ignore server outages from 2am to 8am Mountain Time
-    if (mountainTime.getHours() >= 2 && mountainTime.getHours() < 8) {
+    if (mountainTime.getHours() >= 0 && mountainTime.getHours() < 8) {
         emitEvent = false;
     }
     break;
