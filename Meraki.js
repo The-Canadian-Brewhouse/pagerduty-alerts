@@ -11,7 +11,6 @@ switch (trigger) {
     severity = "info";
     break;
   case "Network usage alert":
-  case "Client IP conflict detected":
   case "Cellular came up":
     severity = "warning";
     break;
