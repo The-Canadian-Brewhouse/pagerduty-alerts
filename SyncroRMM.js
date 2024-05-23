@@ -74,6 +74,7 @@ switch (trigger) {
   case "IPv6":
   case "Powered Off VM":
   case "Service tag capture":
+  case "Givex login capture":
   case "Fixed Disk Check":
     emitEvent = false;
     break;
