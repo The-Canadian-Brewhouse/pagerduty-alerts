@@ -18,6 +18,7 @@ switch (trigger) {
     severity = "warning";
     if (body.alertData.ssidName.includes("DIRECT") ||
       body.alertData.ssidName.includes("Meraki") ||
+      body.alertData.ssidName.includes("xPico") ||
       body.alertData.ssidName.includes("roku")) {
       emitEvent = false;
     }
