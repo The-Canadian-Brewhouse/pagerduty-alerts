@@ -93,6 +93,7 @@ switch (trigger) {
       "f8:9e:28:d8:b9:d9",
       "f8:9e:28:d8:bd:29",
       "f8:9e:28:d8:b5:09",
+      "14:9f:43:2a:fd:18",
       ];
     if (newDHCPServerWhitelist.includes(body.alertData.mac)) {emitEvent = false;}
     break;
