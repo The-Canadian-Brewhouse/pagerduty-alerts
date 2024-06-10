@@ -19,7 +19,9 @@ switch (trigger) {
     if (body.alertData.ssidName.includes("DIRECT") ||
       body.alertData.ssidName.includes("Meraki") ||
       body.alertData.ssidName.includes("xPico") ||
-      body.alertData.ssidName.includes("roku")) {
+      body.alertData.ssidName.includes("roku") ||
+      body.alertData.ssidName.includes("meraki-scanning"))
+      {
       emitEvent = false;
     }
     break;
