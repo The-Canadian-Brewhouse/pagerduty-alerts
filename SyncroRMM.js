@@ -40,6 +40,10 @@ switch (trigger) {
         emitEvent = false;
     }
     break;
+  case "bsod_trigger":
+    severity = "critical";
+    trigger = "Blue Screen of Death";
+    break;
   case "Intel Rapid Storage Monitoring":
     severity = "error";
     trigger = "RAID Volume Degraded";
